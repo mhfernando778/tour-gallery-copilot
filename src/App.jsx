@@ -6,26 +6,26 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchTours = async () => {
-      setLoading(true);
-      try {
-        const apiUrl = 'https://course-api.com/react-tours-project';
-        const response = await fetch(apiUrl);
+  const fetchTours = async () => {
+    setLoading(true);
+    try {
+      const apiUrl = 'https://course-api.com/react-tours-project';
+      const response = await fetch(apiUrl);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch tours');
-        }
-        const data = await response.json();
-        setTours(data);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Failed to fetch tours');
       }
-    };
+      const data = await response.json();
+      setTours(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchTours();
   }, []);
 
@@ -45,7 +45,12 @@ const App = () => {
     <div>
       <h1>Our Tours</h1>
       {tours.length === 0 ? (
-        <h2>No tours left</h2>
+        <div>
+          <h2>No tours left</h2>
+          <button className="btn-refresh" onClick={fetchTours}>
+            Refresh
+          </button>
+        </div>
       ) : (
         <Gallery tours={tours} onRemove={removeTour} />
       )}
@@ -53,4 +58,4 @@ const App = () => {
   );
 };
 
-export default App; 
+export default App;
